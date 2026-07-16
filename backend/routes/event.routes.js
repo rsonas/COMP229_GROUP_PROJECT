@@ -1,5 +1,7 @@
 import express from 'express';
 import eventCtrl from '../controllers/event.controller.js';
+import authMiddleware from '../middleware/auth.middleware.js';
+
 import {
     validateEventCreate,
     validateEventUpdate,
@@ -12,14 +14,17 @@ const loadEvent = (req, res, next) => {
     eventCtrl.eventByID(req, res, next, req.params.eventId);
 };
 
+// Create event (requires login)
+// List events (public)
 router.route('/api/events')
-    .post(validateEventCreate, eventCtrl.create)
+    .post(authMiddleware, validateEventCreate, eventCtrl.create)
     .get(eventCtrl.list);
 
+// Read, update, delete individual event
 router.route('/api/events/:eventId')
     .all(validateEventId, loadEvent)
     .get(eventCtrl.read)
-    .put(validateEventUpdate, eventCtrl.update)
-    .delete(eventCtrl.remove);
+    .put(authMiddleware, validateEventUpdate, eventCtrl.update)
+    .delete(authMiddleware, eventCtrl.remove);
 
 export default router;
