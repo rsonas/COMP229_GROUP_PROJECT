@@ -1,17 +1,25 @@
 import express from 'express';
 import eventCtrl from '../controllers/event.controller.js';
+import {
+    validateEventCreate,
+    validateEventUpdate,
+    validateEventId
+} from '../middleware/event.validation.js';
 
 const router = express.Router();
 
+const loadEvent = (req, res, next) => {
+    eventCtrl.eventByID(req, res, next, req.params.eventId);
+};
+
 router.route('/api/events')
-    .post(eventCtrl.create)
+    .post(validateEventCreate, eventCtrl.create)
     .get(eventCtrl.list);
 
 router.route('/api/events/:eventId')
+    .all(validateEventId, loadEvent)
     .get(eventCtrl.read)
-    .put(eventCtrl.update)
+    .put(validateEventUpdate, eventCtrl.update)
     .delete(eventCtrl.remove);
-
-router.param('eventId', eventCtrl.eventByID);
 
 export default router;
