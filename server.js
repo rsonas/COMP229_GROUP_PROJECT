@@ -20,6 +20,12 @@ app.listen(PORT, () => {
 
 app.get('/', (req, res) => {
     res.json({
-        message: "Backend launched successfully!"
+        message: "Backend launched successfully!",
+        status: "Online",
+        endpoints: [
+            "/api/auth/register",
+            "/api/auth/login",
+            "/api/events"
+        ]
     });
 });
