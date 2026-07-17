@@ -5,6 +5,13 @@
 ### Topic
 Backend REST API for a Sports Ticket Management System
 
+## Team Members
+
+- **Fatima** – Presentation, Documentation & Logo Design
+- **Aislinn** – Repository Setup, Server Configuration & Deployment
+- **Ahmed** – Backend CRUD Operations
+- **Omer** – API Endpoints
+- **Hashi** – Authentication & Authorization
 
 ---
 
