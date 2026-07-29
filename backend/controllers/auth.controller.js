@@ -9,6 +9,11 @@ const register = async (req, res) => {
     try {
 
         const { username, email, password } = req.body;
+        if (!username || !email || !password) {
+            return res.status(400).json({
+                message: "All fields are required"
+            });
+        }
 
         // Check if email already exists
         const existingEmail = await User.findOne({ email });
@@ -63,6 +68,11 @@ const login = async (req, res) => {
     try {
 
         const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({
+                message: "Email and password are required"
+            });
+        }
 
 
         const user = await User.findOne({ email });
@@ -91,7 +101,8 @@ const login = async (req, res) => {
         const token = jwt.sign(
             {
                 id: user._id,
-                username: user.username,                email: user.email
+                username: user.username,                
+                email: user.email
             },
             config.jwtSecret,
             {
@@ -137,6 +148,11 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
     try {
         const { username, email, password } = req.body;
+        if (!username && !email && !password) {
+            return res.status(400).json({
+                message: "Please provide at least one field to update"
+            });
+        }
 
         const user = await User.findById(req.user.id);
 
