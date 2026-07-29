@@ -66,11 +66,14 @@ export const AuthProvider = ({ children }) => {
                 data: response,
             };
         } catch (error) {
+            console.error("Registration error:", error.response?.data);
+
             return {
                 success: false,
                 message:
                     error.response?.data?.message ||
-                    "Registration failed.",
+                    error.message ||
+                    "Registration failed."
             };
         }
     };
