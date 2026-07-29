@@ -1,0 +1,23 @@
+//(protect pages)
+import { Navigate } from "react-router-dom";
+import useAuth from "../context/useAuth";
+
+const ProtectedRoute = ({ children }) => {
+    const { loading, isAuthenticated } = useAuth();
+
+    if (loading) {
+        return (
+            <div className="container mt-5 text-center">
+                <h4>Loading...</h4>
+            </div>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+};
+
+export default ProtectedRoute;
