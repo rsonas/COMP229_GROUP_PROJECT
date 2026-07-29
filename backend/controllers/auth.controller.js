@@ -10,11 +10,21 @@ const register = async (req, res) => {
 
         const { username, email, password } = req.body;
 
-        const existingUser = await User.findOne({ email });
+        // Check if email already exists
+        const existingEmail = await User.findOne({ email });
 
-        if (existingUser) {
+        if (existingEmail) {
             return res.status(400).json({
-                message: 'User already exists'
+                message: "Email already exists"
+            });
+        }
+
+        // Check if username already exists
+        const existingUsername = await User.findOne({ username });
+
+        if (existingUsername) {
+            return res.status(400).json({
+                message: "Username already exists"
             });
         }
 
@@ -136,11 +146,29 @@ const updateProfile = async (req, res) => {
             });
         }
 
-        if (username) {
+        if (username && username !== user.username) {
+
+            const existingUsername = await User.findOne({ username });
+
+            if (existingUsername) {
+                return res.status(400).json({
+                    message: "Username already exists"
+                });
+            }
+
             user.username = username;
         }
 
-        if (email) {
+        if (email && email !== user.email) {
+
+            const existingUser = await User.findOne({ email });
+
+            if (existingUser) {
+                return res.status(400).json({
+                    message: "Email already exists"
+                });
+            }
+
             user.email = email;
         }
 
