@@ -15,5 +15,7 @@ router.route('/api/auth/login')
 router.route("/api/auth/profile")
     .get(authMiddleware, authCtrl.getProfile);
 
+    router.route("/api/auth/profile")
+    .put(authMiddleware, authCtrl.updateProfile);
 
 export default router;
