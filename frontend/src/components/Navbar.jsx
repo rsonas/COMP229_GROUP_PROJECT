@@ -6,14 +6,24 @@ const Navbar = () => {
     const { isAuthenticated, logout } = useAuth();
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg shadow-sm">
+
             <div className="container">
 
-                <Link className="navbar-brand" to="/">
-                    COMP229 Project
+                {/* Logo */}
+                <Link
+                    className="navbar-brand"
+                    to="/"
+                >
+                    <img
+                        src="/logo.png"
+                        alt="SportsPass Logo"
+                        className="logo"
+                    />
                 </Link>
 
-                <div className="navbar-nav ms-auto">
+                {/* Navigation Links */}
+                <div className="navbar-nav ms-auto align-items-center">
 
                     <Link className="nav-link" to="/">
                         Home
@@ -45,6 +55,7 @@ const Navbar = () => {
                 </div>
 
             </div>
+
         </nav>
     );
 };
