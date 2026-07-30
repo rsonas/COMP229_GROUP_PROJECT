@@ -1,0 +1,48 @@
+/* SportsPass Navbar */
+
+.navbar {
+    background-color: #142850;
+    padding: 14px 0;
+}
+
+/* Logo */
+
+.logo {
+    height: 60px;
+    width: auto;
+}
+
+/* Navigation Links */
+
+.nav-link {
+    color: white !important;
+    font-weight: 600;
+    font-size: 16px;
+    margin-left: 18px;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: #F58220 !important;
+}
+
+/* Logout Button */
+
+.btn-outline-light {
+    color: #F58220;
+    border: 2px solid #F58220;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-outline-light:hover {
+    background-color: #F58220;
+    border-color: #F58220;
+    color: white;
+}
+
+/* Active Link */
+
+.nav-link.active {
+    color: #F58220 !important;
+}
