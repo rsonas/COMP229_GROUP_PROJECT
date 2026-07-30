@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const eventSchema = new mongoose.Schema({
+
     title: {
         type: String,
         required: true,
@@ -13,15 +14,26 @@ const eventSchema = new mongoose.Schema({
         trim: true
     },
 
+    description: {
+        type: String,
+        required: true,
+        trim: true
+    },
+
     location: {
         type: String,
         required: true,
         trim: true
     },
 
-    date: {
+    startDate: {
         type: Date,
         required: true
+    },
+
+    endDate: {
+        type: Date,
+        required: false
     },
 
     price: {
@@ -38,12 +50,26 @@ const eventSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ['Open', 'Full', 'Completed', 'Cancelled'],
-        default: 'Open'
+        enum: [
+            'Active',
+            'Full',
+            'Completed',
+            'Cancelled',
+            'Expired'
+        ],
+        default: 'Active'
+    },
+
+    // Stores the user who created this event
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 
 }, {
     timestamps: true
 });
+
 
 export default mongoose.model('Event', eventSchema);
