@@ -1,13 +1,16 @@
-//(show Login/Register OR Profile/Logout)
 import { Link } from "react-router-dom";
+import useAuth from "../context/useAuth";
+import "../styles/navbar.css";
 
 const Navbar = () => {
+    const { isAuthenticated, logout } = useAuth();
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container">
 
                 <Link className="navbar-brand" to="/">
-                    User Management
+                    COMP229 Project
                 </Link>
 
                 <div className="navbar-nav ms-auto">
@@ -16,13 +19,28 @@ const Navbar = () => {
                         Home
                     </Link>
 
-                    <Link className="nav-link" to="/login">
-                        Login
+                    <Link className="nav-link" to="/profile">
+                        Profile
                     </Link>
 
-                    <Link className="nav-link" to="/register">
-                        Register
-                    </Link>
+                    {!isAuthenticated ? (
+                        <>
+                            <Link className="nav-link" to="/login">
+                                Login
+                            </Link>
+
+                            <Link className="nav-link" to="/register">
+                                Register
+                            </Link>
+                        </>
+                    ) : (
+                        <button
+                            className="btn btn-outline-light ms-3"
+                            onClick={logout}
+                        >
+                            Logout
+                        </button>
+                    )}
 
                 </div>
 

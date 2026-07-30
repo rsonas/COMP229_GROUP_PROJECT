@@ -82,6 +82,8 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         authService.logout();
         setUser(null);
+
+        window.location.href = "/";
     };
 
     return (

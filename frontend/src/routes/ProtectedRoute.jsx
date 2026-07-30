@@ -1,20 +1,33 @@
-//(protect pages)
-import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useAuth from "../context/useAuth";
 
 const ProtectedRoute = ({ children }) => {
-    const { loading, isAuthenticated } = useAuth();
+    const { isAuthenticated, loading } = useAuth();
 
     if (loading) {
         return (
-            <div className="container mt-5 text-center">
-                <h4>Loading...</h4>
+            <div className="text-center mt-5">
+                Loading...
             </div>
         );
     }
 
     if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+        return (
+            <div className="container mt-5 text-center">
+
+                <h2>Profile</h2>
+
+                <p className="mt-3">
+                    Please{" "}
+                    <Link to="/login">Login</Link>
+                    {" "}or{" "}
+                    <Link to="/register">Register</Link>
+                    {" "}to view your profile.
+                </p>
+
+            </div>
+        );
     }
 
     return children;
