@@ -29,6 +29,10 @@ const Navbar = () => {
                         Home
                     </Link>
 
+                    <Link className="nav-link" to="/events">
+                        Events
+                    </Link>
+
                     <Link className="nav-link" to="/profile">
                         Profile
                     </Link>
