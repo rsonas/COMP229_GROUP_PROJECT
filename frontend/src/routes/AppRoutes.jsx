@@ -7,6 +7,8 @@ import Profile from "../pages/Profile";
 import Unauthorized from "../pages/Unauthorized";
 import Events from "../pages/Events";
 import EventDetails from "../pages/EventDetails";
+import CreateEvent from "../pages/CreateEvent";
+import EditEvent from "../pages/EditEvent";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -19,9 +21,12 @@ const AppRoutes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/events/:eventId" element={<EventDetails />} />
+            <Route
+                path="/events/:eventId"
+                element={<EventDetails />}
+            />
 
-            {/* Protected Page */}
+            {/* Protected Pages */}
             <Route
                 path="/profile"
                 element={
@@ -31,8 +36,29 @@ const AppRoutes = () => {
                 }
             />
 
+            <Route
+                path="/events/create"
+                element={
+                    <ProtectedRoute>
+                        <CreateEvent />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/events/:eventId/edit"
+                element={
+                    <ProtectedRoute>
+                        <EditEvent />
+                    </ProtectedRoute>
+                }
+            />
+
             {/* Unauthorized */}
-            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route
+                path="/unauthorized"
+                element={<Unauthorized />}
+            />
 
             {/* Catch All */}
             <Route path="*" element={<Home />} />

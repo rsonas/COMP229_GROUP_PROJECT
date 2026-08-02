@@ -15,17 +15,15 @@ const ProtectedRoute = ({ children }) => {
     if (!isAuthenticated) {
         return (
             <div className="container mt-5 text-center">
-
-                <h2>Profile</h2>
+                <h2>Login Required</h2>
 
                 <p className="mt-3">
                     Please{" "}
                     <Link to="/login">Login</Link>
                     {" "}or{" "}
                     <Link to="/register">Register</Link>
-                    {" "}to view your profile.
+                    {" "}to continue.
                 </p>
-
             </div>
         );
     }

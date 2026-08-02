@@ -42,8 +42,7 @@ const create = async (req, res) => {
 };
 
 
-
-// List all events (Public access)
+// List all events (public access)
 const list = async (req, res) => {
 
     try {
@@ -62,7 +61,6 @@ const list = async (req, res) => {
     }
 
 };
-
 
 
 // Find event by ID
@@ -98,14 +96,12 @@ const eventByID = async (req, res, next, id) => {
 };
 
 
-
 // Read one event
 const read = (req, res) => {
 
     return res.status(200).json(req.event);
 
 };
-
 
 
 // Update event
@@ -127,8 +123,33 @@ const update = async (req, res) => {
         }
 
 
-        event = extend(event, req.body);
+        // Only allow these fields to be updated
+        const allowedFields = [
+            'title',
+            'sport',
+            'description',
+            'location',
+            'startDate',
+            'endDate',
+            'price',
+            'availableTickets',
+            'status'
+        ];
 
+
+        const updates = {};
+
+
+        allowedFields.forEach((field) => {
+
+            if (field in req.body) {
+                updates[field] = req.body[field];
+            }
+
+        });
+
+
+        event = extend(event, updates);
 
 
         // Validate updated dates
@@ -145,26 +166,20 @@ const update = async (req, res) => {
 
 
         return res.status(200).json({
-
             message: 'Event updated successfully',
-
             data: event
-
         });
 
 
     } catch (err) {
 
         return res.status(400).json({
-
             error: err.message
-
         });
 
     }
 
 };
-
 
 
 // Cancel event instead of deleting
@@ -180,40 +195,29 @@ const remove = async (req, res) => {
         if (!event.owner || event.owner.toString() !== req.user.id) {
 
             return res.status(403).json({
-
                 error: 'You can only cancel your own events'
-
             });
 
         }
 
 
-
-        // Change status instead of deleting
+        // Change status instead of permanently deleting
         event.status = 'Cancelled';
-
 
 
         await event.save();
 
 
-
         return res.status(200).json({
-
             message: 'Event cancelled successfully',
-
             data: event
-
         });
-
 
 
     } catch (err) {
 
         return res.status(400).json({
-
             error: err.message
-
         });
 
     }
@@ -221,19 +225,11 @@ const remove = async (req, res) => {
 };
 
 
-
 export default {
-
     create,
-
     list,
-
     eventByID,
-
     read,
-
     update,
-
     remove
-
 };

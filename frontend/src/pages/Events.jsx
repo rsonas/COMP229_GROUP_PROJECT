@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getEvents } from "../api/eventService";
 import EventCard from "../components/EventCard";
+import useAuth from "../context/useAuth";
 import "../styles/events.css";
 
 const getErrorMessage = (error) => (
@@ -10,6 +12,8 @@ const getErrorMessage = (error) => (
 );
 
 const Events = () => {
+    const { isAuthenticated } = useAuth();
+
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -25,9 +29,13 @@ const Events = () => {
                     setEvents(Array.isArray(data) ? data : []);
                 }
             } catch (requestError) {
-                if (isMounted) setError(getErrorMessage(requestError));
+                if (isMounted) {
+                    setError(getErrorMessage(requestError));
+                }
             } finally {
-                if (isMounted) setLoading(false);
+                if (isMounted) {
+                    setLoading(false);
+                }
             }
         };
 
@@ -42,36 +50,71 @@ const Events = () => {
         <main className="events-page">
             <div className="container py-5">
                 <header className="events-header text-center mx-auto mb-5">
-                    <p className="events-eyebrow mb-2">Find your next game</p>
-                    <h1 className="events-title mb-3">Sports Events</h1>
-                    <p>Browse upcoming sports experiences no account required.</p>
+                    <p className="events-eyebrow mb-2">
+                        Find your next game
+                    </p>
+
+                    <h1 className="events-title mb-3">
+                        Sports Events
+                    </h1>
+
+                    <p>
+                        Browse upcoming sports experiences no account required.
+                    </p>
+
+                    {isAuthenticated && (
+                        <Link
+                            className="btn event-button mt-3"
+                            to="/events/create"
+                        >
+                            Create Event
+                        </Link>
+                    )}
                 </header>
 
                 {loading && (
                     <div className="events-state" role="status">
-                        <div className="spinner-border" aria-hidden="true" />
+                        <div
+                            className="spinner-border"
+                            aria-hidden="true"
+                        />
+
                         <p>Loading events...</p>
                     </div>
                 )}
 
                 {!loading && error && (
-                    <div className="alert alert-danger events-alert" role="alert">
-                        <h2 className="h5">Unable to load events</h2>
+                    <div
+                        className="alert alert-danger events-alert"
+                        role="alert"
+                    >
+                        <h2 className="h5">
+                            Unable to load events
+                        </h2>
+
                         <p>{error}</p>
                     </div>
                 )}
 
                 {!loading && !error && events.length === 0 && (
                     <div className="events-state">
-                        <h2 className="h4">No events available</h2>
-                        <p>Check back soon for new sports events.</p>
+                        <h2 className="h4">
+                            No events available
+                        </h2>
+
+                        <p>
+                            Check back soon for new sports events.
+                        </p>
                     </div>
                 )}
 
                 {!loading && !error && events.length > 0 && (
                     <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
                         {events.map((event) => (
-                            <EventCard key={event._id} event={event} />
+                            <EventCard
+                                key={event._id}
+                                event={event}
+                            />
                         ))}
                     </div>
                 )}
@@ -81,4 +124,3 @@ const Events = () => {
 };
 
 export default Events;
-

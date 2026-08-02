@@ -1,22 +1,40 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getEventById } from "../api/eventService";
-import { formatDateTime, formatPrice } from "../utils/eventFormatters";
+
+import {
+    cancelEvent,
+    getEventById
+} from "../api/eventService";
+
+import useAuth from "../context/useAuth";
+import {
+    formatDateTime,
+    formatPrice
+} from "../utils/eventFormatters";
+
 import "../styles/events.css";
 
 const getErrorMessage = (error) => {
-    if (error.response?.status === 404) return "The event could not be found.";
+    if (error.response?.status === 404) {
+        return "The event could not be found.";
+    }
 
-    return error.response?.data?.error
+    return (
+        error.response?.data?.error
         || error.response?.data?.message
-        || "We could not load this event right now. Please try again later.";
+        || "We could not load this event right now. Please try again later."
+    );
 };
 
 const EventDetails = () => {
     const { eventId } = useParams();
+    const { user, isAuthenticated } = useAuth();
+
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [actionError, setActionError] = useState("");
+    const [cancelling, setCancelling] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -32,13 +50,20 @@ const EventDetails = () => {
                 const data = await getEventById(eventId);
 
                 if (isMounted) {
-                    if (data && typeof data === "object") setEvent(data);
-                    else setError("The event could not be found.");
+                    if (data && typeof data === "object") {
+                        setEvent(data);
+                    } else {
+                        setError("The event could not be found.");
+                    }
                 }
             } catch (requestError) {
-                if (isMounted) setError(getErrorMessage(requestError));
+                if (isMounted) {
+                    setError(getErrorMessage(requestError));
+                }
             } finally {
-                if (isMounted) setLoading(false);
+                if (isMounted) {
+                    setLoading(false);
+                }
             }
         };
 
@@ -49,23 +74,74 @@ const EventDetails = () => {
         };
     }, [eventId]);
 
+    const ownerId =
+        typeof event?.owner === "object"
+            ? event.owner?._id
+            : event?.owner;
+
+    const isOwner =
+        isAuthenticated
+        && user?._id
+        && ownerId
+        && user._id === ownerId;
+
+    const handleCancel = async () => {
+        const confirmed = window.confirm(
+            "Are you sure you want to cancel this event?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        setActionError("");
+        setCancelling(true);
+
+        try {
+            const result = await cancelEvent(eventId);
+
+            setEvent(result.data);
+        } catch (requestError) {
+            setActionError(
+                requestError.response?.data?.error
+                || requestError.response?.data?.message
+                || "Unable to cancel the event."
+            );
+        } finally {
+            setCancelling(false);
+        }
+    };
+
     return (
         <main className="events-page">
             <div className="container py-5">
-                <Link className="event-back-link d-inline-block mb-4" to="/events">
-                     ← Back to Events
+                <Link
+                    className="event-back-link d-inline-block mb-4"
+                    to="/events"
+                >
+                    ← Back to Events
                 </Link>
 
                 {loading && (
                     <div className="events-state" role="status">
-                        <div className="spinner-border" aria-hidden="true" />
+                        <div
+                            className="spinner-border"
+                            aria-hidden="true"
+                        />
+
                         <p>Loading event details...</p>
                     </div>
                 )}
 
                 {!loading && error && (
-                    <div className="alert alert-danger events-alert" role="alert">
-                        <h1 className="h4">Event unavailable</h1>
+                    <div
+                        className="alert alert-danger events-alert"
+                        role="alert"
+                    >
+                        <h1 className="h4">
+                            Event unavailable
+                        </h1>
+
                         <p>{error}</p>
                     </div>
                 )}
@@ -74,25 +150,123 @@ const EventDetails = () => {
                     <article className="event-details-card card border-0 shadow">
                         <div className="card-body p-4 p-md-5">
                             <div className="d-flex flex-wrap align-items-center gap-3 mb-3">
-                                <span className="event-sport">{event.sport || "Sports"}</span>
-                                <span className={`event-status event-status-${(event.status || "unknown").toLowerCase()}`}>
+                                <span className="event-sport">
+                                    {event.sport || "Sports"}
+                                </span>
+
+                                <span
+                                    className={
+                                        `event-status event-status-${(
+                                            event.status || "unknown"
+                                        ).toLowerCase()}`
+                                    }
+                                >
                                     {event.status || "Status unavailable"}
                                 </span>
                             </div>
 
-                            <h1 className="event-details-title">{event.title || "Untitled event"}</h1>
+                            <h1 className="event-details-title">
+                                {event.title || "Untitled event"}
+                            </h1>
+
                             <p className="event-details-description">
-                                {event.description || "No description is available."}
+                                {event.description
+                                    || "No description is available."}
                             </p>
 
+                            {actionError && (
+                                <div
+                                    className="alert alert-danger"
+                                    role="alert"
+                                >
+                                    {actionError}
+                                </div>
+                            )}
+
+                            {isOwner && (
+                                <div className="d-flex flex-wrap gap-3 mb-4">
+                                    <Link
+                                        className="btn event-button"
+                                        to={`/events/${eventId}/edit`}
+                                    >
+                                        Edit Event
+                                    </Link>
+
+                                    {event.status !== "Cancelled" && (
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger"
+                                            onClick={handleCancel}
+                                            disabled={cancelling}
+                                        >
+                                            {cancelling
+                                                ? "Cancelling..."
+                                                : "Cancel Event"}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+
                             <div className="event-details-grid">
-                                <div><span>Location</span><strong>{event.location || "To be announced"}</strong></div>
-                                <div><span>Start</span><strong>{formatDateTime(event.startDate)}</strong></div>
-                                <div><span>End</span><strong>{event.endDate ? formatDateTime(event.endDate) : "Not specified"}</strong></div>
-                                <div><span>Price</span><strong>{formatPrice(event.price)}</strong></div>
-                                <div><span>Available tickets</span><strong>{Number.isFinite(Number(event.availableTickets)) ? event.availableTickets : "Unavailable"}</strong></div>
-                                <div><span>Created</span><strong>{event.createdAt ? formatDateTime(event.createdAt) : "Not provided"}</strong></div>
-                                <div><span>Last updated</span><strong>{event.updatedAt ? formatDateTime(event.updatedAt) : "Not provided"}</strong></div>
+                                <div>
+                                    <span>Location</span>
+                                    <strong>
+                                        {event.location
+                                            || "To be announced"}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>Start</span>
+                                    <strong>
+                                        {formatDateTime(event.startDate)}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>End</span>
+                                    <strong>
+                                        {event.endDate
+                                            ? formatDateTime(event.endDate)
+                                            : "Not specified"}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>Price</span>
+                                    <strong>
+                                        {formatPrice(event.price)}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>Available tickets</span>
+                                    <strong>
+                                        {Number.isFinite(
+                                            Number(event.availableTickets)
+                                        )
+                                            ? event.availableTickets
+                                            : "Unavailable"}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>Created</span>
+                                    <strong>
+                                        {event.createdAt
+                                            ? formatDateTime(event.createdAt)
+                                            : "Not provided"}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>Last updated</span>
+                                    <strong>
+                                        {event.updatedAt
+                                            ? formatDateTime(event.updatedAt)
+                                            : "Not provided"}
+                                    </strong>
+                                </div>
                             </div>
                         </div>
                     </article>
