@@ -9,6 +9,7 @@ import Events from "../pages/Events";
 import EventDetails from "../pages/EventDetails";
 import CreateEvent from "../pages/CreateEvent";
 import EditEvent from "../pages/EditEvent";
+import Dashboard from "../pages/Dashboard";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -54,6 +55,14 @@ const AppRoutes = () => {
                 }
             />
 
+            <Route
+                path="/dashboard"
+                element={<ProtectedRoute>
+                        <Dashboard />
+                        </ProtectedRoute>
+                }
+            />
+
             {/* Unauthorized */}
             <Route
                 path="/unauthorized"
@@ -64,6 +73,7 @@ const AppRoutes = () => {
             <Route path="*" element={<Home />} />
 
         </Routes>
+        
     );
 };
 

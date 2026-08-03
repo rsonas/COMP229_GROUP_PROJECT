@@ -25,8 +25,12 @@ const Events = () => {
             try {
                 const data = await getEvents();
 
+                const activeEvents = Array.isArray(data)
+                    ? data.filter((event) => event.status === "Active")
+                    : [];
+
                 if (isMounted) {
-                    setEvents(Array.isArray(data) ? data : []);
+                    setEvents(activeEvents);
                 }
             } catch (requestError) {
                 if (isMounted) {
