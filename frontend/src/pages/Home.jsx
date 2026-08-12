@@ -48,11 +48,13 @@ const Home = () => {
                         maxWidth: "850px"
                     }}
                 >
-                    SportsPass is your all-in-one platform for discovering,
-                    booking, and managing tickets for your favorite sporting
-                    events. Whether you're cheering courtside, rinkside,
-                    or from the stadium stands, SportsPass makes securing
-                    your next game day experience simple, fast, and secure.
+                    SportsPass is your all-in-one platform for discovering and 
+                    managing your favorite sporting events. Whether you're organizing 
+                    a game, managing event details, or keeping track of upcoming matches, 
+                    SportsPass makes it simple to stay organized and keep your events 
+                    running smoothly. From courtside competitions to rinkside matchups 
+                    and stadium games, SportsPass provides an easy and efficient way to 
+                    manage your sporting events in one place.
                 </p>
 
             </div>
