@@ -1,3 +1,17 @@
+/*
+    Aislinn Richardson  301146892
+    Fatima Dabbous      301368242
+    Omer Yousif         30109346
+    Hashi Mohamed       300787311
+    Ahmed Yafeai        301509099
+    Tahseen Ahmed       301544487
+
+    ======= SportsPass =======
+
+    Defines the API endpoints for user registration, login, profile management
+
+*/
+
 import express from 'express';
 import eventCtrl from '../controllers/event.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
