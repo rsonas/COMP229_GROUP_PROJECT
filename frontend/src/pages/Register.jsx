@@ -1,3 +1,17 @@
+/*
+    Aislinn Richardson  301146892
+    Fatima Dabbous      301368242
+    Omer Yousif         30109346
+    Hashi Mohamed       300787311
+    Ahmed Yafeai        301509099
+    Tahseen Ahmed       301544487
+
+    ======= SportsPass =======
+
+    Registration page
+
+*/
+
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useAuth from "../context/useAuth";

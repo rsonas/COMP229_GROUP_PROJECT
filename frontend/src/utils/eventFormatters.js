@@ -1,3 +1,17 @@
+/*
+    Aislinn Richardson  301146892
+    Fatima Dabbous      301368242
+    Omer Yousif         30109346
+    Hashi Mohamed       300787311
+    Ahmed Yafeai        301509099
+    Tahseen Ahmed       301544487
+
+    ======= SportsPass =======
+
+    Formats events to improve readability
+
+*/
+
 const formatDateTime = (date) => {
     if (!date) return "Date to be announced";
 

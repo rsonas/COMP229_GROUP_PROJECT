@@ -1,3 +1,17 @@
+/*
+    Aislinn Richardson  301146892
+    Fatima Dabbous      301368242
+    Omer Yousif         30109346
+    Hashi Mohamed       300787311
+    Ahmed Yafeai        301509099
+    Tahseen Ahmed       301544487
+
+    ======= SportsPass =======
+
+    Attaches JWT token to protected requests
+
+*/
+
 import axios from "axios";
 
 const api = axios.create({

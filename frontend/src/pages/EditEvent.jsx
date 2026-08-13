@@ -1,3 +1,17 @@
+/*
+    Aislinn Richardson  301146892
+    Fatima Dabbous      301368242
+    Omer Yousif         30109346
+    Hashi Mohamed       300787311
+    Ahmed Yafeai        301509099
+    Tahseen Ahmed       301544487
+
+    ======= SportsPass =======
+
+    Edit event page - allows an authenticated user to modify their own previously created events
+
+*/
+
 import { useEffect, useState } from "react";
 import {
     Link,

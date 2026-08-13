@@ -1,6 +1,19 @@
+/*
+    Aislinn Richardson  301146892
+    Fatima Dabbous      301368242
+    Omer Yousif         30109346
+    Hashi Mohamed       300787311
+    Ahmed Yafeai        301509099
+    Tahseen Ahmed       301544487
+
+    ======= SportsPass =======
+
+    Profile page - shows users information and allows them to change passwords
+
+*/
+
 import { useState, useEffect } from "react";
 import authService from "../api/authService";
-import "../styles/profile.css";
 
 const Profile = () => {
     const [formData, setFormData] = useState({

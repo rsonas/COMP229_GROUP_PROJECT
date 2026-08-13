@@ -1,3 +1,17 @@
+/*
+    Aislinn Richardson  301146892
+    Fatima Dabbous      301368242
+    Omer Yousif         30109346
+    Hashi Mohamed       300787311
+    Ahmed Yafeai        301509099
+    Tahseen Ahmed       301544487
+
+    ======= SportsPass =======
+
+    Navigational bar at top of screen - links to other pages on website
+
+*/
+
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../context/useAuth";

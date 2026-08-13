@@ -1,3 +1,17 @@
+/*
+    Aislinn Richardson  301146892
+    Fatima Dabbous      301368242
+    Omer Yousif         30109346
+    Hashi Mohamed       300787311
+    Ahmed Yafeai        301509099
+    Tahseen Ahmed       301544487
+
+    ======= SportsPass =======
+
+    Create event page - allows an authenticated user to make a new event
+
+*/
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createEvent } from "../api/eventService";
