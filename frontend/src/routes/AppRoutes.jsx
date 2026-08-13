@@ -8,7 +8,7 @@
 
     ======= SportsPass =======
 
-    Holds routes for each page
+    Handles routes for each page
 
 */
 
