@@ -65,7 +65,25 @@ const eventSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+
+    history : [
+        {
+            username: {
+                type: String,
+                requires: true
+            },
+            date: {
+                type: Date,
+                default: Date.now
+            },
+            comment: {
+                type: String,
+                required: true
+     
+           }   
+        }
+    ]
 
 }, {
     timestamps: true

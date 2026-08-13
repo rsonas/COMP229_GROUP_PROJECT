@@ -370,6 +370,7 @@ const EditEvent = () => {
                                             required
                                         />
                                     </div>
+                                    
                                 </div>
 
                                 <button

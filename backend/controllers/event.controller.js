@@ -7,7 +7,14 @@ const create = async (req, res) => {
 
     const event = new Event({
         ...req.body,
-        owner: req.user.id
+        owner: req.user.id,
+        history: [
+            {
+                username: req.user.username,
+                date: new Date(),
+                comment: 'Event created'
+            }
+        ]
     });
 
 
@@ -148,6 +155,15 @@ const update = async (req, res) => {
 
         });
 
+        if (!event.history) {
+            event.history = [];
+        }
+
+        event.history.push({
+            username: req.user.username,
+            date: new Date(),
+            comment: 'Event details updated'
+        });
 
         event = extend(event, updates);
 
@@ -200,10 +216,18 @@ const remove = async (req, res) => {
 
         }
 
-
         // Change status instead of permanently deleting
         event.status = 'Cancelled';
 
+        if (!event.history) {
+            event.history = [];
+        }
+
+        event.history.push({
+            username: req.user.username,
+            date: new Date(),
+            comment: 'Event cancelled'
+        });
 
         await event.save();
 

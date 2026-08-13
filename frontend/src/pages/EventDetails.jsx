@@ -268,6 +268,39 @@ const EventDetails = () => {
                                     </strong>
                                 </div>
                             </div>
+
+                            {isOwner && (
+                                <section className="event-history mt-5">
+                                    <h2 className="h4 mb-3">Event History</h2>
+
+                                    {event.history && event.history.length > 0 ? (
+                                        <div className="event-history-list">
+                                            {event.history.map((entry, index) => (
+                                                <div
+                                                    className="event-history-entry"
+                                                    key={`${entry.date}-${index}`}
+                                                >
+                                                    <div>
+                                                        <strong>{entry.comment}</strong>
+                                                    </div>
+
+                                                    <div className="event-history-meta">
+                                                        <span>
+                                                            {entry.username}
+                                                        </span>
+
+                                                        <span>
+                                                            {formatDateTime(entry.date)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p>No history is available for this event.</p>
+                                    )}
+                                </section>
+                            )}
                         </div>
                     </article>
                 )}
